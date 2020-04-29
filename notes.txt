@@ -1,4 +1,6 @@
-==========Session 1==========
+https://docker-curriculum.com/#dockerfile
+
+==========Hello World==========
 #docker run busybox
 - did nothing because it had nothing to run
 
@@ -7,4 +9,80 @@
 - i could delete everything there, but next time I ran it
     it would work fine because docker builds a new container on each run
 
-benis
+#docker rm [containerID]
+- deletes a container on disk
+#docker rm $(docker ps -a -q -f status=exited)
+- deletes all container with status exited
+- -q returns based on ID and -f filters by output
+#docker container prune
+- also removes all stopped containers
+#docker rmi removes images
+
+
+Terminology
+Images: contianer blueprints, what 'docker pull' actually downloads
+Containers: created from images, runs the actual app, 'docker run'
+Daemon: service running on hostOS that manages build, run, distribution
+Client: cli for interaction with Daemon (kiteamtic may be good alt)
+
+
+==========Webapps with Docker==========
+Static Sites
+#docker run --rm [container registry]
+- this command pulls, builds, runs, then removes the selected image
+- but this does not open any ports...
+.:
+#docker run -d -P --name [name] [image name]
+- -d detaches the terminal 
+- -P will publish exposed ports to random ports
+- --name will name the container
+#docker port [name]
+- shows all open ports for [name]
+#docker run -p 8888:80 [image]
+- -p [external:internal] will forward the internal port of the image
+    to the external port of the hostOS
+- for example, -p 8888:80 will forward port 80 of the container to port 8888 of the host
+    .: the site is visible on localhost:8888
+
+
+Docker Images
+#docker images
+- lists all local images
+#docker pull [image]:[version]
+- pull specific version
+#docker search
+- search directly
+
+- Base images have no parent (typically just on OS e.g. debian)
+- Child images are builds ontop of a base that add functionality
+- Official images (typically one word)
+- User images have a slash, username/image-name
+
+
+Our First Image
+cloned his flask repo
+
+
+Dockerfile
+- list of plaintext commands that for docker to run while creating the image
+- very similar to bash commands
+
+~FROM [base]
+- specify the base image
+~WORKDIR [path]
+- sets app's working directory
+~COPY . .
+- copy all files into the container ??
+~RUN [bash command]
+- pretty obvious
+~EXPOSE [port]
+- exposes opens container port
+~CMD [program, flag1, ...]
+- CMD is used for the command to run the application
+
+#docker build [path]
+- creates user images locally from the dockerfile
+- -t for optional tag name
+
+
+
