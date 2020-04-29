@@ -1,0 +1,10 @@
+==========Session 1==========
+#docker run busybox
+- did nothing because it had nothing to run
+
+#docker run -it busybox sh
+- the -it flag spawns a sh shell for the container
+- i could delete everything there, but next time I ran it
+    it would work fine because docker builds a new container on each run
+
+benis
